@@ -12,10 +12,33 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+function getStoredLanguage(): Language {
+  if (typeof window === 'undefined') {
+    return 'tw';
+  }
+
+  try {
+    const stored = window.localStorage.getItem('preferred-language');
+    return stored === 'cn' || stored === 'tw' ? stored : 'tw';
+  } catch {
+    return 'tw';
+  }
+}
+
+function persistLanguage(language: Language) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem('preferred-language', language);
+  } catch {
+    // Ignore storage failures on restricted mobile browsers/webviews.
+  }
+}
+
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setInternalLanguage] = useState<Language>(() => {
-    return (localStorage.getItem('preferred-language') as Language) || 'tw';
-  });
+  const [language, setInternalLanguage] = useState<Language>(getStoredLanguage);
 
   const [converter, setConverter] = useState<any>(null);
 
@@ -26,7 +49,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     } else {
       setConverter(null);
     }
-    localStorage.setItem('preferred-language', language);
+    persistLanguage(language);
   }, [language]);
 
   const setLanguage = (lang: Language) => {

@@ -117,12 +117,32 @@ const LINE_HEIGHT_OPTIONS: Array<{ id: LineHeight; label: string; article: strin
   { id: 'airy', label: '寬鬆', article: 'leading-9', paragraph: 'leading-9', list: 'space-y-3' },
 ];
 
-function getStoredValue<T extends string>(key: string, allowed: readonly T[], fallback: T): T {
+function safeStorageGet(key: string): string | null {
   if (typeof window === 'undefined') {
-    return fallback;
+    return null;
   }
 
-  const storedValue = window.localStorage.getItem(key);
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageSet(key: string, value: string) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage failures on restricted mobile browsers/webviews.
+  }
+}
+
+function getStoredValue<T extends string>(key: string, allowed: readonly T[], fallback: T): T {
+  const storedValue = safeStorageGet(key);
   if (storedValue && allowed.includes(storedValue as T)) {
     return storedValue as T;
   }
@@ -233,7 +253,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
       }
       setVoices(zhVoices);
       
-      const storedThemeVoice = window.localStorage.getItem('bfnn-reader-voice');
+      const storedThemeVoice = safeStorageGet('bfnn-reader-voice');
       if (storedThemeVoice && zhVoices.some(v => v.voiceURI === storedThemeVoice)) {
         setSelectedVoice(storedThemeVoice);
       } else if (zhVoices.length > 0) {
@@ -252,7 +272,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
 
   useEffect(() => {
     if (selectedVoice) {
-      window.localStorage.setItem('bfnn-reader-voice', selectedVoice);
+      safeStorageSet('bfnn-reader-voice', selectedVoice);
     }
   }, [selectedVoice]);
 
@@ -281,15 +301,15 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
   }, [isOpen, article]);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEYS.theme, readerTheme);
+    safeStorageSet(STORAGE_KEYS.theme, readerTheme);
   }, [readerTheme]);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEYS.fontSize, fontSize);
+    safeStorageSet(STORAGE_KEYS.fontSize, fontSize);
   }, [fontSize]);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEYS.lineHeight, lineHeight);
+    safeStorageSet(STORAGE_KEYS.lineHeight, lineHeight);
   }, [lineHeight]);
 
   useEffect(() => {
@@ -349,7 +369,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
       return;
     }
 
-    const storedRaw = window.localStorage.getItem(articleStorageKey);
+    const storedRaw = safeStorageGet(articleStorageKey);
     if (!storedRaw) {
       return;
     }
@@ -519,7 +539,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
     const normalizedProgress = Math.max(0, Math.min(100, progress));
 
     setReadingProgress(normalizedProgress);
-    window.localStorage.setItem(
+    safeStorageSet(
       articleStorageKey,
       JSON.stringify({
         scrollTop: container.scrollTop,
