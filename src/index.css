@@ -17,17 +17,29 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    min-height: 100%;
   }
-  
+
   body {
     font-family: var(--font-family-chinese), serif;
     @apply antialiased;
     background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 50%, #fef3e2 100%);
     min-height: 100vh;
   }
+
+  body,
+  #root {
+    min-height: 100%;
+  }
 }
 
 @layer utilities {
+  .min-app-screen {
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: calc(var(--app-height, 1vh) * 100);
+  }
+
   .font-chinese {
     font-family: var(--font-family-chinese), serif;
   }

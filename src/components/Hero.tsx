@@ -9,15 +9,15 @@ interface HeroProps {
 export default function Hero({ articleCount, teacherCount, categoryCount }: HeroProps) {
   const { convert } = useLanguage();
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <section id="home" className="min-app-screen relative flex items-center justify-center overflow-hidden pt-20">
       <div className="absolute inset-0 bg-gradient-to-br from-amber-100/50 via-orange-100/50 to-yellow-100/50" />
-      
-      <div className="absolute top-20 left-10 w-72 h-72 bg-amber-300/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-300/20 rounded-full blur-3xl" />
-      
+
+      <div className="absolute top-20 left-10 hidden h-72 w-72 rounded-full bg-amber-300/20 blur-3xl md:block" />
+      <div className="absolute bottom-20 right-10 hidden h-96 w-96 rounded-full bg-orange-300/20 blur-3xl md:block" />
+
       <div className="relative z-10 container mx-auto px-4 text-center">
         <h1 className="text-5xl md:text-7xl font-bold text-gray-800 mb-6 font-chinese leading-tight">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-orange-500">
+          <span className="text-amber-700 md:bg-clip-text md:text-transparent md:bg-gradient-to-r md:from-amber-600 md:to-orange-500">
             {convert('佛法如燈')}
           </span>
           <br />
@@ -58,7 +58,7 @@ export default function Hero({ articleCount, teacherCount, categoryCount }: Hero
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 animate-bounce md:block">
         <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>

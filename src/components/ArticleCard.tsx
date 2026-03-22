@@ -22,7 +22,7 @@ export default function ArticleCard({ article, onClick }: ArticleCardProps) {
   return (
     <article 
       onClick={onClick}
-      className="group bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-white/50"
+      className="group overflow-hidden rounded-2xl border border-white/50 bg-white/92 shadow-lg transition-all duration-500 cursor-pointer hover:-translate-y-2 hover:shadow-2xl md:bg-white/80 md:backdrop-blur-sm"
     >
       <div className={`h-2 bg-gradient-to-r ${gradientColor}`} />
       

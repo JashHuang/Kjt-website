@@ -19,7 +19,7 @@ export default function Header() {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+          ? 'bg-white/95 shadow-lg md:backdrop-blur-md' 
           : 'bg-transparent'
       }`}
     >
@@ -65,7 +65,7 @@ export default function Header() {
         </nav>
 
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-100 py-4">
+          <div className="border-t border-gray-100 bg-white/95 py-4 md:hidden md:backdrop-blur-md">
             <div className="flex flex-col gap-4 px-4">
               <a href="#home" className="text-gray-700 hover:text-amber-600 transition-colors font-medium py-2">
                 {convert('首頁')}

@@ -9,7 +9,7 @@ interface ArticleTableProps {
 export default function ArticleTable({ articles, onArticleClick }: ArticleTableProps) {
   const { convert } = useLanguage();
   return (
-    <div className="mt-8 overflow-hidden rounded-3xl border border-amber-100 bg-white/85 shadow-xl shadow-amber-100/40 backdrop-blur-sm">
+    <div className="mt-8 overflow-hidden rounded-3xl border border-amber-100 bg-white/95 shadow-xl shadow-amber-100/40 md:bg-white/85 md:backdrop-blur-sm">
       <div className="hidden md:grid grid-cols-[100px_minmax(0,1.8fr)_220px] gap-4 border-b border-amber-100 bg-gradient-to-r from-amber-100/80 via-orange-50 to-yellow-50 px-6 py-4 text-sm font-semibold text-gray-700">
         <span>{convert('編號')}</span>
         <span>{convert('文章標題')}</span>

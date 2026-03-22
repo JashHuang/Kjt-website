@@ -40,7 +40,9 @@ export default defineConfig({
     host: true
   },
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    target: 'es2019',
+    cssTarget: 'safari13',
   },
   publicDir: 'public'
 })

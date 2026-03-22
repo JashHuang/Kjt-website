@@ -35,6 +35,25 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const syncAppHeight = () => {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight * 0.01}px`);
+    };
+
+    syncAppHeight();
+    window.addEventListener('resize', syncAppHeight);
+    window.addEventListener('orientationchange', syncAppHeight);
+
+    return () => {
+      window.removeEventListener('resize', syncAppHeight);
+      window.removeEventListener('orientationchange', syncAppHeight);
+    };
+  }, []);
+
+  useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}articles.json`)
       .then((res) => {
         if (!res.ok) {
@@ -102,7 +121,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+    <div className="min-app-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
       <Header />
       <Hero
         articleCount={articles.length}
