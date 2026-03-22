@@ -24,12 +24,12 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16 md:h-20">
-          <a href="#home" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg">
-              <span className="text-white text-xl">佛</span>
+        <nav className="flex h-18 items-center justify-between md:h-20">
+          <a href="#home" className="flex min-w-0 items-center gap-3">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg md:h-10 md:w-10">
+              <span className="text-2xl text-white md:text-xl">佛</span>
             </div>
-            <span className="text-xl font-bold text-gray-800 font-chinese">
+            <span className="truncate text-2xl font-bold text-gray-800 font-chinese md:text-xl">
               {convert('寬覺堂')}
             </span>
           </a>
@@ -51,10 +51,10 @@ export default function Header() {
           </div>
 
           <button 
-            className="md:hidden p-2"
+            className="rounded-full p-3 md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-8 w-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isMobileMenuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -65,21 +65,21 @@ export default function Header() {
         </nav>
 
         {isMobileMenuOpen && (
-          <div className="border-t border-gray-100 bg-white/95 py-4 md:hidden md:backdrop-blur-md">
+          <div className="border-t border-gray-100 bg-white/95 py-5 md:hidden md:backdrop-blur-md">
             <div className="flex flex-col gap-4 px-4">
-              <a href="#home" className="text-gray-700 hover:text-amber-600 transition-colors font-medium py-2">
+              <a href="#home" className="py-2 text-lg font-medium text-gray-700 transition-colors hover:text-amber-600">
                 {convert('首頁')}
               </a>
-              <a href="#articles" className="text-gray-700 hover:text-amber-600 transition-colors font-medium py-2">
+              <a href="#articles" className="py-2 text-lg font-medium text-gray-700 transition-colors hover:text-amber-600">
                 {convert('文章')}
               </a>
-              <a href="#footer" className="text-gray-700 hover:text-amber-600 transition-colors font-medium py-2">
+              <a href="#footer" className="py-2 text-lg font-medium text-gray-700 transition-colors hover:text-amber-600">
                 {convert('關於')}
               </a>
               <div className="py-2">
                 <LanguageToggle />
               </div>
-              <a href="#articles" className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-2 rounded-full font-medium">
+              <a href="#articles" className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-3 text-center text-lg font-medium text-white">
                 {convert('開始閱讀')}
               </a>
             </div>

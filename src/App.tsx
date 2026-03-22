@@ -35,8 +35,6 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    window.__KJT_DEBUG__?.setStatus('App mounted');
-
     if (typeof window === 'undefined') {
       return;
     }
@@ -56,8 +54,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    window.__KJT_DEBUG__?.setStatus('Loading article index');
-
     fetch(`${import.meta.env.BASE_URL}articles.json`)
       .then((res) => {
         if (!res.ok) {
@@ -66,14 +62,10 @@ function App() {
         return res.json() as Promise<Article[]>;
       })
       .then((data) => {
-        window.__KJT_DEBUG__?.setStatus(`Loaded ${data.length} articles`);
         setArticles(data);
       })
       .catch((error) => {
         console.error('Failed to load article index:', error);
-        window.__KJT_DEBUG__?.show(
-          error instanceof Error ? error.stack ?? error.message : String(error)
-        );
         setLoadFailed(true);
       });
   }, []);
@@ -137,15 +129,15 @@ function App() {
         categoryCount={Math.max(categories.length - 1, 0)}
       />
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4 font-chinese">
+      <main className="container mx-auto px-4 py-10 md:py-12">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-4xl font-bold text-gray-800 font-chinese md:text-3xl">
             {convert('隨機精選')}
           </h2>
         </div>
 
         {loadFailed ? (
-          <div className="glass-effect rounded-2xl p-8 text-center text-gray-700 max-w-2xl mx-auto">
+          <div className="glass-effect mx-auto max-w-2xl rounded-3xl p-8 text-center text-lg leading-relaxed text-gray-700">
             {convert('文章索引載入失敗，請稍後重新整理頁面再試。')}
           </div>
         ) : articles.length === 0 ? (
@@ -154,7 +146,7 @@ function App() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-5">
+            <div className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 xl:grid-cols-5">
               {featuredArticles.map((article) => (
                 <ArticleCard
                   key={`${article.sourceDir}-${article.id}`}
@@ -164,17 +156,17 @@ function App() {
               ))}
             </div>
 
-            <section id="articles" className="mt-20">
+            <section id="articles" className="mt-16 md:mt-20">
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
-                  <h2 className="text-3xl font-bold text-gray-800 font-chinese">
+                  <h2 className="text-4xl font-bold text-gray-800 font-chinese md:text-3xl">
                     {convert('分類文章列表')}
                   </h2>
-                  <p className="mt-3 max-w-2xl text-gray-600">
+                  <p className="mt-3 max-w-2xl text-lg leading-relaxed text-gray-600 md:text-base">
                     {convert('以表格方式瀏覽目前典藏，切換分類或輸入關鍵字後，可快速找到想讀的文章。')}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-amber-100/70 px-4 py-3 text-sm text-amber-800 shadow-sm">
+                <div className="rounded-3xl bg-amber-100/80 px-5 py-4 text-lg text-amber-800 shadow-sm md:rounded-2xl md:px-4 md:py-3 md:text-sm">
                   {convert(`共找到 ${filteredArticles.length} 篇，第 ${safeCurrentPage} / ${totalPages} 頁`)}
                 </div>
               </div>
@@ -190,7 +182,7 @@ function App() {
 
               <div className="mt-6">
                 <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-gray-700">{convert('關鍵字搜尋')}</span>
+                  <span className="mb-3 block text-lg font-medium text-gray-700 md:mb-2 md:text-sm">{convert('關鍵字搜尋')}</span>
                   <input
                     type="search"
                     value={searchKeyword}
@@ -199,7 +191,7 @@ function App() {
                       setCurrentPage(1);
                     }}
                     placeholder={convert('搜尋標題、作者、摘要或分類')}
-                    className="w-full rounded-2xl border border-amber-200 bg-white/90 px-4 py-3 text-gray-800 shadow-sm outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-100"
+                    className="w-full rounded-3xl border border-amber-200 bg-white/95 px-5 py-4 text-xl text-gray-800 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-amber-400 focus:ring-4 focus:ring-amber-100 md:rounded-2xl md:px-4 md:py-3 md:text-base"
                   />
                 </label>
               </div>
@@ -209,27 +201,27 @@ function App() {
                 onArticleClick={handleArticleClick}
               />
 
-              <div className="mt-6 flex flex-col gap-4 rounded-2xl bg-white/70 px-4 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
-                <p className="text-sm text-gray-600">
+              <div className="mt-6 flex flex-col gap-4 rounded-3xl bg-white/80 px-5 py-5 shadow-sm md:rounded-2xl md:px-4 md:py-4 md:flex-row md:items-center md:justify-between">
+                <p className="text-base text-gray-600 md:text-sm">
                   {convert(`每頁顯示 ${PAGE_SIZE} 篇文章。`)}
                 </p>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-3 md:gap-2">
                   <button
                     type="button"
                     onClick={() => goToPage(safeCurrentPage - 1)}
                     disabled={safeCurrentPage === 1}
-                    className="rounded-full border border-amber-200 px-4 py-2 text-sm font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-full border border-amber-200 px-5 py-3 text-base font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40 md:px-4 md:py-2 md:text-sm"
                   >
                     {convert('上一頁')}
                   </button>
-                  <span className="px-2 text-sm text-gray-600">
+                  <span className="px-2 text-base text-gray-600 md:text-sm">
                     {safeCurrentPage} / {totalPages}
                   </span>
                   <button
                     type="button"
                     onClick={() => goToPage(safeCurrentPage + 1)}
                     disabled={safeCurrentPage === totalPages}
-                    className="rounded-full border border-amber-200 px-4 py-2 text-sm font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-full border border-amber-200 px-5 py-3 text-base font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40 md:px-4 md:py-2 md:text-sm"
                   >
                     {convert('下一頁')}
                   </button>
@@ -239,17 +231,17 @@ function App() {
           </>
         )}
 
-        <div className="text-center mt-16">
-          <div className="glass-effect rounded-2xl p-8 max-w-3xl mx-auto">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4 font-chinese">
+        <div className="mt-16 text-center">
+          <div className="glass-effect mx-auto max-w-3xl rounded-3xl p-8 md:rounded-2xl">
+            <h3 className="mb-4 text-3xl font-bold text-gray-800 font-chinese md:text-2xl">
               {convert('法寶流通')}
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6 text-lg leading-relaxed text-gray-600 md:text-base">
               {convert(`目前已整理 ${articles.length} 篇文章，歡迎依分類持續翻閱更多佛學經典。`)}
             </p>
             <a
               href="#articles"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-3 rounded-full font-medium hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-4 text-lg font-medium text-white transition-all duration-300 shadow-lg hover:from-amber-600 hover:to-orange-600 hover:shadow-xl md:py-3 md:text-base"
             >
               <span>{convert('探索更多')}</span>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,12 +252,12 @@ function App() {
         </div>
       </main>
 
-      <footer id="footer" className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 mt-16">
+      <footer id="footer" className="mt-16 bg-gradient-to-r from-gray-800 to-gray-900 py-12 text-white">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400 mb-2">
+          <p className="mb-2 text-lg text-gray-400 md:text-base">
             {convert('南無阿彌陀佛')}
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-base text-gray-500 md:text-sm">
             {convert('願一切眾生離苦得樂，共證菩提')}
           </p>
         </div>

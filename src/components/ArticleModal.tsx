@@ -104,17 +104,17 @@ const THEME_OPTIONS: Array<{
 ];
 
 const FONT_SIZE_OPTIONS: Array<{ id: FontSize; article: string; h1: string; h2: string; h3: string; indicator: string }> = [
-  { id: 'xs', article: 'text-[14px]', h1: 'text-[1.85rem]', h2: 'text-[1.45rem]', h3: 'text-[1.15rem]', indicator: 'text-sm' },
-  { id: 'sm', article: 'text-[16px]', h1: 'text-[2rem]', h2: 'text-[1.6rem]', h3: 'text-[1.25rem]', indicator: 'text-base' },
-  { id: 'md', article: 'text-[18px]', h1: 'text-[2.25rem]', h2: 'text-[1.85rem]', h3: 'text-[1.4rem]', indicator: 'text-lg' },
-  { id: 'lg', article: 'text-[20px]', h1: 'text-[2.5rem]', h2: 'text-[2.05rem]', h3: 'text-[1.55rem]', indicator: 'text-xl' },
-  { id: 'xl', article: 'text-[22px]', h1: 'text-[2.75rem]', h2: 'text-[2.2rem]', h3: 'text-[1.7rem]', indicator: 'text-2xl' },
+  { id: 'xs', article: 'text-[18px] md:text-[16px]', h1: 'text-[2.3rem] md:text-[2rem]', h2: 'text-[1.9rem] md:text-[1.6rem]', h3: 'text-[1.55rem] md:text-[1.3rem]', indicator: 'text-base' },
+  { id: 'sm', article: 'text-[22px] md:text-[18px]', h1: 'text-[2.8rem] md:text-[2.25rem]', h2: 'text-[2.3rem] md:text-[1.85rem]', h3: 'text-[1.85rem] md:text-[1.45rem]', indicator: 'text-lg' },
+  { id: 'md', article: 'text-[28px] md:text-[22px]', h1: 'text-[3.4rem] md:text-[2.7rem]', h2: 'text-[2.8rem] md:text-[2.2rem]', h3: 'text-[2.2rem] md:text-[1.7rem]', indicator: 'text-xl' },
+  { id: 'lg', article: 'text-[36px] md:text-[28px]', h1: 'text-[4.2rem] md:text-[3.2rem]', h2: 'text-[3.4rem] md:text-[2.55rem]', h3: 'text-[2.7rem] md:text-[2rem]', indicator: 'text-2xl' },
+  { id: 'xl', article: 'text-[44px] md:text-[34px]', h1: 'text-[5rem] md:text-[3.8rem]', h2: 'text-[4.1rem] md:text-[3rem]', h3: 'text-[3.2rem] md:text-[2.35rem]', indicator: 'text-3xl' },
 ];
 
 const LINE_HEIGHT_OPTIONS: Array<{ id: LineHeight; label: string; article: string; paragraph: string; list: string }> = [
-  { id: 'tight', label: '緊密', article: 'leading-7', paragraph: 'leading-7', list: 'space-y-1' },
-  { id: 'relaxed', label: '舒適', article: 'leading-8', paragraph: 'leading-8', list: 'space-y-2' },
-  { id: 'airy', label: '寬鬆', article: 'leading-9', paragraph: 'leading-9', list: 'space-y-3' },
+  { id: 'tight', label: '緊密', article: 'leading-[1.7] md:leading-8', paragraph: 'leading-[1.7] md:leading-8', list: 'space-y-2' },
+  { id: 'relaxed', label: '舒適', article: 'leading-[1.95] md:leading-9', paragraph: 'leading-[1.95] md:leading-9', list: 'space-y-3' },
+  { id: 'airy', label: '寬鬆', article: 'leading-[2.2] md:leading-[2.1]', paragraph: 'leading-[2.2] md:leading-[2.1]', list: 'space-y-4' },
 ];
 
 function getFullscreenElement(): Element | null {
@@ -591,14 +591,14 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
     options: Array<{ id: T; label: string }>
   ) => (
     <div className="flex items-center gap-2">
-      <span className={`text-xs font-semibold tracking-[0.2em] ${theme.footerText}`}>{convert(title)}</span>
+      <span className={`text-sm font-semibold tracking-[0.2em] md:text-xs ${theme.footerText}`}>{convert(title)}</span>
       <div className="flex flex-wrap items-center gap-2">
         {options.map((option) => (
           <button
             key={option.id}
             type="button"
             onClick={() => onChange(option.id)}
-            className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
+            className={`rounded-full px-4 py-2 text-base font-medium transition md:px-3 md:py-1.5 md:text-sm ${
               value === option.id ? theme.controlActive : theme.controlIdle
             }`}
           >
@@ -616,17 +616,17 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-4"
       onClick={onClose}
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
       <div
         ref={modalRef}
-        className={`relative flex flex-col w-full overflow-hidden rounded-3xl shadow-2xl ${theme.shell} ${isFullscreen ? 'max-w-none h-full max-h-none rounded-none' : 'max-w-5xl max-h-[90vh]'}`}
+        className={`relative flex w-full flex-col overflow-hidden rounded-3xl shadow-2xl ${theme.shell} ${isFullscreen ? 'max-w-none h-full max-h-none rounded-none' : 'max-w-5xl max-h-[92vh]'}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={`flex-shrink-0 z-10 border-b px-4 py-3 md:px-6 md:py-4 backdrop-blur-md flex flex-col gap-3 ${theme.header}`}>
+        <div className={`z-10 flex flex-shrink-0 flex-col gap-4 border-b px-4 py-4 backdrop-blur-md md:gap-3 md:px-6 md:py-4 ${theme.header}`}>
           <div className="mb-1 h-1 overflow-hidden rounded-full bg-black/6">
             <div
               className="h-full rounded-full bg-black/25 transition-[width] duration-200"
@@ -636,15 +636,15 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
 
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <span className={`text-xs font-medium ${theme.subtitle}`}>#{article.id}</span>
-              <h2 className={`text-lg md:text-xl font-bold font-chinese truncate ${theme.title}`}>{convert(article.title)}</h2>
+              <span className={`text-sm font-medium md:text-xs ${theme.subtitle}`}>#{article.id}</span>
+              <h2 className={`truncate font-chinese text-2xl font-bold md:text-xl ${theme.title}`}>{convert(article.title)}</h2>
             </div>
 
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex flex-shrink-0 items-center gap-2">
               <button
                 type="button"
                 onClick={() => setShowSettings(!showSettings)}
-                className={`rounded-full p-2 text-sm font-medium transition ${showSettings ? theme.controlActive : theme.controlIdle}`}
+                className={`rounded-full p-3 text-base font-medium transition md:p-2 md:text-sm ${showSettings ? theme.controlActive : theme.controlIdle}`}
                 title="閱讀設定"
               >
                 <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -655,7 +655,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
 
               <button
                 onClick={onClose}
-                className={`rounded-full p-2 transition-colors ${theme.closeButton}`}
+                className={`rounded-full p-3 transition-colors md:p-2 ${theme.closeButton}`}
                 title="關閉"
               >
                 <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -667,12 +667,12 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
 
           <div className={`${showSettings ? 'flex' : 'hidden'} flex-col gap-4 pt-4 border-t border-slate-500/20`}>
             {/* TTS Controls */}
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex flex-wrap items-center gap-2">
               {voices.length > 0 && (
                 <select
                   value={selectedVoice}
                   onChange={(e) => setSelectedVoice(e.target.value)}
-                  className={`rounded-full px-3 py-1.5 text-sm font-medium outline-none transition ${theme.controlIdle} bg-transparent max-w-[120px] sm:max-w-[150px] truncate border-none appearance-none`}
+                  className={`max-w-[150px] appearance-none truncate rounded-full border-none bg-transparent px-4 py-2 text-base font-medium outline-none transition sm:max-w-[170px] md:max-w-[150px] md:px-3 md:py-1.5 md:text-sm ${theme.controlIdle}`}
                   style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
                   title="選擇語音"
                 >
@@ -688,7 +688,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
                 <button
                   type="button"
                   onClick={prevChunk}
-                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${theme.controlIdle}`}
+                  className={`rounded-full px-4 py-2 text-base font-medium transition md:px-3 md:py-1.5 md:text-sm ${theme.controlIdle}`}
                   title="跳至上一段"
                 >
                   上一段
@@ -698,7 +698,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
               <button
                 type="button"
                 onClick={handleTTS}
-                className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${isPlaying && !isPaused ? theme.controlActive : theme.controlIdle}`}
+                className={`rounded-full px-4 py-2 text-base font-medium transition md:px-3 md:py-1.5 md:text-sm ${isPlaying && !isPaused ? theme.controlActive : theme.controlIdle}`}
               >
                 {isPlaying ? (isPaused ? convert('繼續') : convert('暫停')) : convert('目前位置朗讀')}
               </button>
@@ -707,7 +707,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
                 <button
                   type="button"
                   onClick={nextChunk}
-                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${theme.controlIdle}`}
+                  className={`rounded-full px-4 py-2 text-base font-medium transition md:px-3 md:py-1.5 md:text-sm ${theme.controlIdle}`}
                   title={convert('跳至下一段')}
                 >
                   {convert('下一段')}
@@ -718,7 +718,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
                 <button
                   type="button"
                   onClick={stopTTS}
-                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${theme.controlIdle}`}
+                  className={`rounded-full px-4 py-2 text-base font-medium transition md:px-3 md:py-1.5 md:text-sm ${theme.controlIdle}`}
                 >
                   {convert('停止')}
                 </button>
@@ -730,24 +730,24 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
               {renderToggleGroup('主題', readerTheme, setReaderTheme, THEME_OPTIONS)}
               
               <div className="flex items-center gap-2">
-                <span className={`text-xs font-semibold tracking-[0.2em] ${theme.footerText}`}>{convert('字級')}</span>
+                <span className={`text-sm font-semibold tracking-[0.2em] md:text-xs ${theme.footerText}`}>{convert('字級')}</span>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => stepFontSize(-1)}
                     disabled={selectedFontIndex === 0}
-                    className={`rounded-full px-3 py-1.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${theme.controlIdle}`}
+                    className={`rounded-full px-4 py-2 text-base font-medium transition disabled:cursor-not-allowed disabled:opacity-40 md:px-3 md:py-1.5 md:text-sm ${theme.controlIdle}`}
                   >
                     -
                   </button>
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full ${theme.controlActive}`}>
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full md:h-8 md:w-8 ${theme.controlActive}`}>
                     <span className={`font-bold leading-none ${selectedFontSize.indicator}`}>A</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => stepFontSize(1)}
                     disabled={selectedFontIndex === FONT_SIZE_OPTIONS.length - 1}
-                    className={`rounded-full px-3 py-1.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${theme.controlIdle}`}
+                    className={`rounded-full px-4 py-2 text-base font-medium transition disabled:cursor-not-allowed disabled:opacity-40 md:px-3 md:py-1.5 md:text-sm ${theme.controlIdle}`}
                   >
                     +
                   </button>
@@ -760,7 +760,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
                 <button
                   type="button"
                   onClick={() => void toggleFullscreen()}
-                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition self-start lg:self-auto ${isFullscreen ? theme.controlActive : theme.controlIdle}`}
+                  className={`self-start rounded-full px-4 py-2 text-base font-medium transition lg:self-auto md:px-3 md:py-1.5 md:text-sm ${isFullscreen ? theme.controlActive : theme.controlIdle}`}
                 >
                   {isFullscreen ? convert('離開全螢幕') : convert('全螢幕')}
                 </button>
@@ -772,7 +772,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
         <div
           ref={contentRef}
           onScroll={handleReaderScroll}
-          className={`flex-1 overflow-y-auto p-4 md:p-8 ${theme.content}`}
+          className={`flex-1 overflow-y-auto p-5 md:p-8 ${theme.content}`}
         >
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
@@ -818,7 +818,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
           )}
         </div>
 
-        <div className={`flex-shrink-0 flex items-center justify-between border-t px-6 py-4 backdrop-blur-md ${theme.footer}`}>
+        <div className={`flex flex-shrink-0 items-center justify-between border-t px-4 py-4 backdrop-blur-md md:px-6 ${theme.footer}`}>
           <button
             onClick={onClose}
             className={`flex items-center gap-2 transition-colors ${theme.footerText}`}
@@ -828,7 +828,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
             </svg>
             <span>{convert('返回列表')}</span>
           </button>
-          <div className={`flex items-center gap-2 text-sm ${theme.footerText}`}>
+          <div className={`flex items-center gap-2 text-base md:text-sm ${theme.footerText}`}>
             <span>{isFullscreen ? convert('按 Esc 可離開全螢幕') : convert(`已閱讀 ${Math.round(readingProgress)}%`)}</span>
           </div>
         </div>

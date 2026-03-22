@@ -22,38 +22,38 @@ export default function ArticleCard({ article, onClick }: ArticleCardProps) {
   return (
     <article 
       onClick={onClick}
-      className="group overflow-hidden rounded-2xl border border-white/50 bg-white/92 shadow-lg transition-all duration-500 cursor-pointer hover:-translate-y-2 hover:shadow-2xl md:bg-white/80 md:backdrop-blur-sm"
+      className="group cursor-pointer overflow-hidden rounded-3xl border border-white/50 bg-white/92 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl md:rounded-2xl md:bg-white/80 md:backdrop-blur-sm"
     >
       <div className={`h-2 bg-gradient-to-r ${gradientColor}`} />
       
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <span className={`inline-block px-3 py-1 text-xs font-medium text-white rounded-full bg-gradient-to-r ${gradientColor}`}>
+      <div className="p-6 md:p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <span className={`inline-block rounded-full bg-gradient-to-r px-3 py-1.5 text-sm font-medium text-white md:px-3 md:py-1 md:text-xs ${gradientColor}`}>
             {convert(article.category)}
           </span>
-          <span className="text-sm text-gray-400">#{article.id}</span>
+          <span className="text-base text-gray-400 md:text-sm">#{article.id}</span>
         </div>
 
-        <h3 className="text-xl font-bold text-gray-800 mb-3 font-chinese leading-relaxed group-hover:text-amber-600 transition-colors">
+        <h3 className="mb-3 font-chinese text-2xl font-bold leading-relaxed text-gray-800 transition-colors group-hover:text-amber-600 md:text-xl">
           {convert(article.title)}
         </h3>
 
-        <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+        <p className="mb-4 line-clamp-3 text-lg leading-relaxed text-gray-600 md:line-clamp-2 md:text-base">
           {convert(article.description)}
         </p>
 
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-between border-t border-gray-100 pt-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center">
-              <span className="text-white text-sm font-medium">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-400 md:h-8 md:w-8">
+              <span className="text-base font-medium text-white md:text-sm">
                 {article.author.charAt(0)}
               </span>
             </div>
-            <span className="text-sm text-gray-600 font-medium">{convert(article.author)}</span>
+            <span className="text-base font-medium text-gray-600 md:text-sm">{convert(article.author)}</span>
           </div>
           
           <div className="flex items-center gap-1 text-amber-600 opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-sm font-medium">{convert('閱讀全文')}</span>
+            <span className="text-base font-medium md:text-sm">{convert('閱讀全文')}</span>
             <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
