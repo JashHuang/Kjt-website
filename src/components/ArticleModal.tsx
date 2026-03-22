@@ -117,6 +117,34 @@ const LINE_HEIGHT_OPTIONS: Array<{ id: LineHeight; label: string; article: strin
   { id: 'airy', label: '寬鬆', article: 'leading-9', paragraph: 'leading-9', list: 'space-y-3' },
 ];
 
+function getFullscreenElement(): Element | null {
+  if (typeof document === 'undefined' || !('fullscreenElement' in document)) {
+    return null;
+  }
+
+  return document.fullscreenElement;
+}
+
+function supportsFullscreenApi() {
+  return (
+    typeof document !== 'undefined' &&
+    'fullscreenElement' in document &&
+    typeof document.exitFullscreen === 'function' &&
+    typeof Element !== 'undefined' &&
+    typeof Element.prototype.requestFullscreen === 'function'
+  );
+}
+
+function canUseFullscreen(element: HTMLDivElement | null): element is HTMLDivElement & {
+  requestFullscreen: () => Promise<void>;
+} {
+  return Boolean(
+    element &&
+    supportsFullscreenApi() &&
+    typeof element.requestFullscreen === 'function'
+  );
+}
+
 function safeStorageGet(key: string): string | null {
   if (typeof window === 'undefined') {
     return null;
@@ -173,6 +201,7 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
   const [currentChunkIndex, setCurrentChunkIndex] = useState(-1);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const supportsFullscreen = supportsFullscreenApi();
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
@@ -313,15 +342,19 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
   }, [lineHeight]);
 
   useEffect(() => {
+    if (!supportsFullscreen) {
+      return;
+    }
+
     const handleFullscreenChange = () => {
-      setIsFullscreen(document.fullscreenElement === modalRef.current);
+      setIsFullscreen(getFullscreenElement() === modalRef.current);
     };
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
-  }, []);
+  }, [supportsFullscreen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -354,10 +387,14 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
   }, [isOpen]);
 
   useEffect(() => {
-    if (!isOpen && document.fullscreenElement === modalRef.current) {
+    if (!supportsFullscreen) {
+      return;
+    }
+
+    if (!isOpen && getFullscreenElement() === modalRef.current) {
       void document.exitFullscreen();
     }
-  }, [isOpen]);
+  }, [isOpen, supportsFullscreen]);
 
   useEffect(() => {
     if (!isOpen || !articleStorageKey || loadedArticleId !== article?.id) {
@@ -402,11 +439,11 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
   const selectedFontIndex = FONT_SIZE_OPTIONS.findIndex((option) => option.id === selectedFontSize.id);
 
   const toggleFullscreen = async () => {
-    if (!modalRef.current) {
+    if (!canUseFullscreen(modalRef.current)) {
       return;
     }
 
-    if (document.fullscreenElement === modalRef.current) {
+    if (getFullscreenElement() === modalRef.current) {
       await document.exitFullscreen();
       return;
     }
@@ -719,13 +756,15 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
 
               {renderToggleGroup('行距', lineHeight, setLineHeight, LINE_HEIGHT_OPTIONS)}
 
-              <button
-                type="button"
-                onClick={() => void toggleFullscreen()}
-                className={`rounded-full px-3 py-1.5 text-sm font-medium transition self-start lg:self-auto ${isFullscreen ? theme.controlActive : theme.controlIdle}`}
-              >
-                {isFullscreen ? convert('離開全螢幕') : convert('全螢幕')}
-              </button>
+              {supportsFullscreen && (
+                <button
+                  type="button"
+                  onClick={() => void toggleFullscreen()}
+                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition self-start lg:self-auto ${isFullscreen ? theme.controlActive : theme.controlIdle}`}
+                >
+                  {isFullscreen ? convert('離開全螢幕') : convert('全螢幕')}
+                </button>
+              )}
             </div>
           </div>
         </div>
