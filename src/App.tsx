@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import ArticleCard from './components/ArticleCard';
 import ArticleTable from './components/ArticleTable';
 import CategoryFilter from './components/CategoryFilter';
-import ArticleModal from './components/ArticleModal';
 import type { Article } from './types';
 import './index.css';
 
 const PAGE_SIZE = 20;
+const ArticleModal = lazy(() => import('./components/ArticleModal'));
 
 function shuffleArticles(items: Article[]) {
   const shuffled = [...items];
@@ -35,6 +35,8 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    window.__KJT_DEBUG__?.setStatus('App mounted');
+
     if (typeof window === 'undefined') {
       return;
     }
@@ -54,6 +56,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    window.__KJT_DEBUG__?.setStatus('Loading article index');
+
     fetch(`${import.meta.env.BASE_URL}articles.json`)
       .then((res) => {
         if (!res.ok) {
@@ -62,10 +66,14 @@ function App() {
         return res.json() as Promise<Article[]>;
       })
       .then((data) => {
+        window.__KJT_DEBUG__?.setStatus(`Loaded ${data.length} articles`);
         setArticles(data);
       })
       .catch((error) => {
         console.error('Failed to load article index:', error);
+        window.__KJT_DEBUG__?.show(
+          error instanceof Error ? error.stack ?? error.message : String(error)
+        );
         setLoadFailed(true);
       });
   }, []);
@@ -263,11 +271,13 @@ function App() {
         </div>
       </footer>
 
-      <ArticleModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        article={selectedArticle}
-      />
+      <Suspense fallback={null}>
+        <ArticleModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          article={selectedArticle}
+        />
+      </Suspense>
     </div>
   );
 }

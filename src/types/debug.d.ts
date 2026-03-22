@@ -1,6 +1,7 @@
 interface KjtDebugController {
   mounted: boolean;
   markMounted: () => void;
+  setStatus: (message: string) => void;
   show: (message: string) => void;
 }
 

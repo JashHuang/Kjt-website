@@ -14,6 +14,32 @@
     />
     <script>
       (function () {
+        function ensureStatusBadge() {
+          var badge = document.getElementById('__app_status__');
+          if (badge) return badge;
+
+          badge = document.createElement('div');
+          badge.id = '__app_status__';
+          badge.style.position = 'fixed';
+          badge.style.top = '12px';
+          badge.style.left = '12px';
+          badge.style.zIndex = '2147483647';
+          badge.style.maxWidth = 'calc(100vw - 24px)';
+          badge.style.padding = '8px 10px';
+          badge.style.borderRadius = '999px';
+          badge.style.background = 'rgba(20, 20, 20, 0.82)';
+          badge.style.color = '#fff';
+          badge.style.font = '12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace';
+          badge.style.whiteSpace = 'nowrap';
+          badge.style.overflow = 'hidden';
+          badge.style.textOverflow = 'ellipsis';
+          badge.textContent = 'Booting...';
+          document.addEventListener('DOMContentLoaded', function () {
+            document.body.appendChild(badge);
+          });
+          return badge;
+        }
+
         function ensureDebugPanel() {
           var panel = document.getElementById('__app_debug__');
           if (panel) return panel;
@@ -43,6 +69,7 @@
 
         function showDebug(message) {
           var panel = ensureDebugPanel();
+          ensureStatusBadge().textContent = 'Error';
           panel.style.display = 'block';
           panel.textContent = [
             'KJT debug panel',
@@ -56,12 +83,12 @@
 
         window.__KJT_DEBUG__ = {
           mounted: false,
+          setStatus: function (message) {
+            ensureStatusBadge().textContent = message;
+          },
           markMounted: function () {
             this.mounted = true;
-            var panel = document.getElementById('__app_debug__');
-            if (panel) {
-              panel.style.display = 'none';
-            }
+            ensureStatusBadge().textContent = 'React mounted';
           },
           show: showDebug,
         };
@@ -89,6 +116,7 @@
         });
 
         window.addEventListener('load', function () {
+          ensureStatusBadge().textContent = 'Window loaded';
           setTimeout(function () {
             if (!window.__KJT_DEBUG__.mounted) {
               showDebug('App bundle loaded but React did not finish mounting.');
