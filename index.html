@@ -14,6 +14,22 @@
     />
     <script>
       (function () {
+        function appendToBody(element) {
+          if (document.body) {
+            if (!element.parentNode) {
+              document.body.appendChild(element);
+            }
+            return;
+          }
+
+          document.addEventListener('DOMContentLoaded', function handleReady() {
+            document.removeEventListener('DOMContentLoaded', handleReady);
+            if (!element.parentNode && document.body) {
+              document.body.appendChild(element);
+            }
+          });
+        }
+
         function ensureStatusBadge() {
           var badge = document.getElementById('__app_status__');
           if (badge) return badge;
@@ -34,9 +50,7 @@
           badge.style.overflow = 'hidden';
           badge.style.textOverflow = 'ellipsis';
           badge.textContent = 'Booting...';
-          document.addEventListener('DOMContentLoaded', function () {
-            document.body.appendChild(badge);
-          });
+          appendToBody(badge);
           return badge;
         }
 
@@ -61,15 +75,14 @@
           panel.style.whiteSpace = 'pre-wrap';
           panel.style.wordBreak = 'break-word';
           panel.style.display = 'none';
-          document.addEventListener('DOMContentLoaded', function () {
-            document.body.appendChild(panel);
-          });
+          appendToBody(panel);
           return panel;
         }
 
         function showDebug(message) {
           var panel = ensureDebugPanel();
-          ensureStatusBadge().textContent = 'Error';
+          var firstLine = String(message).split('\n')[0] || 'Error';
+          ensureStatusBadge().textContent = firstLine.slice(0, 80);
           panel.style.display = 'block';
           panel.textContent = [
             'KJT debug panel',
