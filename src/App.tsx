@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { useLanguage } from './contexts/LanguageContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -122,6 +123,7 @@ function App() {
 
   return (
     <div className="min-app-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+      <Analytics />
       <Header />
       <Hero
         articleCount={articles.length}
@@ -162,11 +164,11 @@ function App() {
                   <h2 className="text-4xl font-bold text-gray-800 font-chinese md:text-3xl">
                     {convert('分類文章列表')}
                   </h2>
-                  <p className="mt-3 max-w-2xl text-lg leading-relaxed text-gray-600 md:text-base">
+                  <p className="mt-3 max-w-2xl text-xl leading-relaxed text-gray-600 md:text-base">
                     {convert('以表格方式瀏覽目前典藏，切換分類或輸入關鍵字後，可快速找到想讀的文章。')}
                   </p>
                 </div>
-                <div className="rounded-3xl bg-amber-100/80 px-5 py-4 text-lg text-amber-800 shadow-sm md:rounded-2xl md:px-4 md:py-3 md:text-sm">
+                <div className="rounded-3xl bg-amber-100/80 px-5 py-4 text-xl text-amber-800 shadow-sm md:rounded-2xl md:px-4 md:py-3 md:text-sm">
                   {convert(`共找到 ${filteredArticles.length} 篇，第 ${safeCurrentPage} / ${totalPages} 頁`)}
                 </div>
               </div>
@@ -182,7 +184,7 @@ function App() {
 
               <div className="mt-6">
                 <label className="block">
-                  <span className="mb-3 block text-lg font-medium text-gray-700 md:mb-2 md:text-sm">{convert('關鍵字搜尋')}</span>
+                  <span className="mb-3 block text-xl font-medium text-gray-700 md:mb-2 md:text-sm">{convert('關鍵字搜尋')}</span>
                   <input
                     type="search"
                     value={searchKeyword}
@@ -202,7 +204,7 @@ function App() {
               />
 
               <div className="mt-6 flex flex-col gap-4 rounded-3xl bg-white/80 px-5 py-5 shadow-sm md:rounded-2xl md:px-4 md:py-4 md:flex-row md:items-center md:justify-between">
-                <p className="text-base text-gray-600 md:text-sm">
+                <p className="text-lg text-gray-600 md:text-sm">
                   {convert(`每頁顯示 ${PAGE_SIZE} 篇文章。`)}
                 </p>
                 <div className="flex flex-wrap items-center gap-3 md:gap-2">
@@ -210,18 +212,18 @@ function App() {
                     type="button"
                     onClick={() => goToPage(safeCurrentPage - 1)}
                     disabled={safeCurrentPage === 1}
-                    className="rounded-full border border-amber-200 px-5 py-3 text-base font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40 md:px-4 md:py-2 md:text-sm"
+                    className="rounded-full border border-amber-200 px-5 py-3 text-lg font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40 md:px-4 md:py-2 md:text-sm"
                   >
                     {convert('上一頁')}
                   </button>
-                  <span className="px-2 text-base text-gray-600 md:text-sm">
+                  <span className="px-2 text-lg text-gray-600 md:text-sm">
                     {safeCurrentPage} / {totalPages}
                   </span>
                   <button
                     type="button"
                     onClick={() => goToPage(safeCurrentPage + 1)}
                     disabled={safeCurrentPage === totalPages}
-                    className="rounded-full border border-amber-200 px-5 py-3 text-base font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40 md:px-4 md:py-2 md:text-sm"
+                    className="rounded-full border border-amber-200 px-5 py-3 text-lg font-medium text-gray-700 transition enabled:hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40 md:px-4 md:py-2 md:text-sm"
                   >
                     {convert('下一頁')}
                   </button>

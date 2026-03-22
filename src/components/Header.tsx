@@ -29,7 +29,7 @@ export default function Header() {
             <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg md:h-10 md:w-10">
               <span className="text-2xl text-white md:text-xl">佛</span>
             </div>
-            <span className="truncate text-2xl font-bold text-gray-800 font-chinese md:text-xl">
+            <span className="truncate text-3xl font-bold text-gray-800 font-chinese md:text-xl">
               {convert('寬覺堂')}
             </span>
           </a>

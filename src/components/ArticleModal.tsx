@@ -104,11 +104,11 @@ const THEME_OPTIONS: Array<{
 ];
 
 const FONT_SIZE_OPTIONS: Array<{ id: FontSize; article: string; h1: string; h2: string; h3: string; indicator: string }> = [
-  { id: 'xs', article: 'text-[18px] md:text-[16px]', h1: 'text-[2.3rem] md:text-[2rem]', h2: 'text-[1.9rem] md:text-[1.6rem]', h3: 'text-[1.55rem] md:text-[1.3rem]', indicator: 'text-base' },
-  { id: 'sm', article: 'text-[22px] md:text-[18px]', h1: 'text-[2.8rem] md:text-[2.25rem]', h2: 'text-[2.3rem] md:text-[1.85rem]', h3: 'text-[1.85rem] md:text-[1.45rem]', indicator: 'text-lg' },
-  { id: 'md', article: 'text-[28px] md:text-[22px]', h1: 'text-[3.4rem] md:text-[2.7rem]', h2: 'text-[2.8rem] md:text-[2.2rem]', h3: 'text-[2.2rem] md:text-[1.7rem]', indicator: 'text-xl' },
-  { id: 'lg', article: 'text-[36px] md:text-[28px]', h1: 'text-[4.2rem] md:text-[3.2rem]', h2: 'text-[3.4rem] md:text-[2.55rem]', h3: 'text-[2.7rem] md:text-[2rem]', indicator: 'text-2xl' },
-  { id: 'xl', article: 'text-[44px] md:text-[34px]', h1: 'text-[5rem] md:text-[3.8rem]', h2: 'text-[4.1rem] md:text-[3rem]', h3: 'text-[3.2rem] md:text-[2.35rem]', indicator: 'text-3xl' },
+  { id: 'xs', article: 'text-[20px] md:text-[16px]', h1: 'text-[2.5rem] md:text-[2rem]', h2: 'text-[2.1rem] md:text-[1.6rem]', h3: 'text-[1.75rem] md:text-[1.3rem]', indicator: 'text-lg' },
+  { id: 'sm', article: 'text-[24px] md:text-[18px]', h1: 'text-[3rem] md:text-[2.25rem]', h2: 'text-[2.5rem] md:text-[1.85rem]', h3: 'text-[2.1rem] md:text-[1.45rem]', indicator: 'text-xl' },
+  { id: 'md', article: 'text-[30px] md:text-[22px]', h1: 'text-[3.6rem] md:text-[2.7rem]', h2: 'text-[3rem] md:text-[2.2rem]', h3: 'text-[2.4rem] md:text-[1.7rem]', indicator: 'text-2xl' },
+  { id: 'lg', article: 'text-[38px] md:text-[28px]', h1: 'text-[4.4rem] md:text-[3.2rem]', h2: 'text-[3.6rem] md:text-[2.55rem]', h3: 'text-[2.9rem] md:text-[2rem]', indicator: 'text-3xl' },
+  { id: 'xl', article: 'text-[48px] md:text-[34px]', h1: 'text-[5.5rem] md:text-[3.8rem]', h2: 'text-[4.5rem] md:text-[3rem]', h3: 'text-[3.5rem] md:text-[2.35rem]', indicator: 'text-4xl' },
 ];
 
 const LINE_HEIGHT_OPTIONS: Array<{ id: LineHeight; label: string; article: string; paragraph: string; list: string }> = [
@@ -616,14 +616,14 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] pt-[calc(env(safe-area-inset-top)+0.75rem)]"
       onClick={onClose}
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
       <div
         ref={modalRef}
-        className={`relative flex w-full flex-col overflow-hidden rounded-3xl shadow-2xl ${theme.shell} ${isFullscreen ? 'max-w-none h-full max-h-none rounded-none' : 'max-w-5xl max-h-[92vh]'}`}
+        className={`relative flex w-full flex-col overflow-hidden rounded-3xl shadow-2xl ${theme.shell} ${isFullscreen ? 'max-w-none h-full max-h-none rounded-none' : 'max-w-5xl max-h-[88vh] max-h-[88svh] max-h-[88dvh]'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`z-10 flex flex-shrink-0 flex-col gap-4 border-b px-4 py-4 backdrop-blur-md md:gap-3 md:px-6 md:py-4 ${theme.header}`}>
