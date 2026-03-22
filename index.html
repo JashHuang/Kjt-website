@@ -12,6 +12,91 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap"
     />
+    <script>
+      (function () {
+        function ensureDebugPanel() {
+          var panel = document.getElementById('__app_debug__');
+          if (panel) return panel;
+
+          panel = document.createElement('pre');
+          panel.id = '__app_debug__';
+          panel.style.position = 'fixed';
+          panel.style.left = '12px';
+          panel.style.right = '12px';
+          panel.style.bottom = '12px';
+          panel.style.zIndex = '2147483647';
+          panel.style.maxHeight = '45vh';
+          panel.style.overflow = 'auto';
+          panel.style.padding = '12px';
+          panel.style.borderRadius = '12px';
+          panel.style.background = 'rgba(20, 20, 20, 0.92)';
+          panel.style.color = '#fff';
+          panel.style.font = '12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace';
+          panel.style.whiteSpace = 'pre-wrap';
+          panel.style.wordBreak = 'break-word';
+          panel.style.display = 'none';
+          document.addEventListener('DOMContentLoaded', function () {
+            document.body.appendChild(panel);
+          });
+          return panel;
+        }
+
+        function showDebug(message) {
+          var panel = ensureDebugPanel();
+          panel.style.display = 'block';
+          panel.textContent = [
+            'KJT debug panel',
+            '',
+            message,
+            '',
+            'UA: ' + navigator.userAgent,
+            'Viewport: ' + window.innerWidth + 'x' + window.innerHeight,
+          ].join('\n');
+        }
+
+        window.__KJT_DEBUG__ = {
+          mounted: false,
+          markMounted: function () {
+            this.mounted = true;
+            var panel = document.getElementById('__app_debug__');
+            if (panel) {
+              panel.style.display = 'none';
+            }
+          },
+          show: showDebug,
+        };
+
+        window.addEventListener('error', function (event) {
+          var detail = 'Error: ' + (event.message || 'Unknown error');
+          if (event.filename) {
+            detail += '\nFile: ' + event.filename + ':' + event.lineno + ':' + event.colno;
+          }
+          if (event.error && event.error.stack) {
+            detail += '\n\n' + event.error.stack;
+          }
+          showDebug(detail);
+        });
+
+        window.addEventListener('unhandledrejection', function (event) {
+          var reason = event.reason;
+          var detail = 'Unhandled rejection';
+          if (reason && reason.stack) {
+            detail += '\n\n' + reason.stack;
+          } else if (reason) {
+            detail += '\n\n' + String(reason);
+          }
+          showDebug(detail);
+        });
+
+        window.addEventListener('load', function () {
+          setTimeout(function () {
+            if (!window.__KJT_DEBUG__.mounted) {
+              showDebug('App bundle loaded but React did not finish mounting.');
+            }
+          }, 4000);
+        });
+      })();
+    </script>
     <title>寬覺堂 - 佛法精選</title>
   </head>
   <body>
