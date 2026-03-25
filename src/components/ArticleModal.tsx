@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import type { Article } from '../types';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 
 interface ArticleModalProps {
   isOpen: boolean;
@@ -791,6 +793,8 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
                 }
               `}</style>
               <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
                 components={{
                   h1: ({ children }) => <h1 className={`mb-6 mt-8 font-bold ${theme.heading} ${selectedFontSize.h1}`}>{children}</h1>,
                   h2: ({ children }) => <h2 className={`mb-4 mt-8 font-bold ${theme.heading} ${selectedFontSize.h2}`}>{children}</h2>,
@@ -805,11 +809,45 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
                       {children}
                     </blockquote>
                   ),
-                  a: ({ href, children }) => (
-                    <a href={href} className={`underline ${theme.link}`} target="_blank" rel="noopener noreferrer">
-                      {children}
-                    </a>
-                  ),
+                  a: ({ href, children, ...props }) => {
+                    const id = (props as any).id;
+
+                    if (href && href.startsWith('#')) {
+                      const targetId = href.substring(1);
+                      return (
+                        <a
+                          href={href}
+                          className={`underline cursor-pointer ${theme.link}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const targetElement = contentRef.current?.querySelector(`#${targetId}`);
+                            if (targetElement) {
+                              targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                          }}
+                        >
+                          {children}
+                        </a>
+                      );
+                    }
+
+                    // If it's an anchor point (has id but no content)
+                    if (id && (!children || (Array.isArray(children) && children.length === 0))) {
+                      return <span id={id} className="invisible" aria-hidden="true" />;
+                    }
+
+                    return (
+                      <a
+                        id={id}
+                        href={href}
+                        className={`underline ${theme.link}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {children}
+                      </a>
+                    );
+                  },
                 }}
               >
                 {convert(content)}
