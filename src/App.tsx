@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
+import { Helmet } from 'react-helmet-async';
 import { useLanguage } from './contexts/LanguageContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -124,6 +125,34 @@ function App() {
   return (
     <div className="min-app-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
       <Analytics />
+      <Helmet>
+        <title>{convert(
+          keyword 
+            ? `搜尋：${searchKeyword} - 寬覺堂` 
+            : selectedCategory === '全部' 
+              ? '寬覺堂 - 佛學經典、高僧大德開示錄修行指引' 
+              : `${selectedCategory} 分類文章 - 寬覺堂`
+        )}</title>
+        <meta name="description" content={convert('寬覺堂 - 收錄佛教經典、高僧大德開示錄、修行指引等珍貴法寶')} />
+        <meta property="og:title" content={convert(
+          keyword 
+            ? `搜尋：${searchKeyword} - 寬覺堂` 
+            : selectedCategory === '全部' 
+              ? '寬覺堂 - 佛學經典、高僧大德開示錄修行指引' 
+              : `${selectedCategory} 分類文章 - 寬覺堂`
+        )} />
+        <meta property="og:description" content={convert('寬覺堂 - 收錄佛教經典、高僧大德開示錄、修行指引等珍貴法寶')} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={convert(
+          keyword 
+            ? `搜尋：${searchKeyword} - 寬覺堂` 
+            : selectedCategory === '全部' 
+              ? '寬覺堂 - 佛學經典、高僧大德開示錄修行指引' 
+              : `${selectedCategory} 分類文章 - 寬覺堂`
+        )} />
+        <meta name="twitter:description" content={convert('寬覺堂 - 收錄佛教經典、高僧大德開示錄、修行指引等珍貴法寶')} />
+      </Helmet>
       <Header />
       <Hero
         articleCount={articles.length}

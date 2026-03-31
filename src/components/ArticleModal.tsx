@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../contexts/LanguageContext';
 import type { Article } from '../types';
 import ReactMarkdown from 'react-markdown';
@@ -628,6 +629,15 @@ export default function ArticleModal({ isOpen, onClose, article }: ArticleModalP
         className={`relative flex w-full flex-col overflow-hidden rounded-3xl shadow-2xl ${theme.shell} ${isFullscreen ? 'max-w-none h-full max-h-none rounded-none' : 'max-w-5xl max-h-[88vh] max-h-[88svh] max-h-[88dvh]'}`}
         onClick={(e) => e.stopPropagation()}
       >
+        <Helmet>
+          <title>{convert(`${article.title} - 寬覺堂`)}</title>
+          <meta name="description" content={convert(article.description || `讀誦 ${article.title}，由 ${article.author} 著作，分類於 ${article.category}。`)} />
+          <meta property="og:title" content={convert(`${article.title} - 寬覺堂`)} />
+          <meta property="og:description" content={convert(article.description || `讀誦 ${article.title}，由 ${article.author} 著作，分類於 ${article.category}。`)} />
+          <meta property="og:type" content="article" />
+          <meta name="twitter:title" content={convert(`${article.title} - 寬覺堂`)} />
+          <meta name="twitter:description" content={convert(article.description || `讀誦 ${article.title}，由 ${article.author} 著作，分類於 ${article.category}。`)} />
+        </Helmet>
         <div className={`z-10 flex flex-shrink-0 flex-col gap-4 border-b px-4 py-4 backdrop-blur-md md:gap-3 md:px-6 md:py-4 ${theme.header}`}>
           <div className="mb-1 h-1 overflow-hidden rounded-full bg-black/6">
             <div
