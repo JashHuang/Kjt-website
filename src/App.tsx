@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from './contexts/LanguageContext';
@@ -28,6 +29,7 @@ function normalizeKeyword(value: string) {
 
 function App() {
   const { convert } = useLanguage();
+  const [searchParams] = useSearchParams();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loadFailed, setLoadFailed] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('全部');
@@ -65,12 +67,20 @@ function App() {
       })
       .then((data) => {
         setArticles(data);
+        const articleId = searchParams.get('id');
+        if (articleId) {
+          const found = data.find((a) => a.id === articleId);
+          if (found) {
+            setSelectedArticle(found);
+            setIsModalOpen(true);
+          }
+        }
       })
       .catch((error) => {
         console.error('Failed to load article index:', error);
         setLoadFailed(true);
       });
-  }, []);
+  }, [searchParams]);
 
   const categories = useMemo(
     () => ['全部', ...new Set(articles.map((article) => article.category))],
@@ -111,11 +121,13 @@ function App() {
   const handleArticleClick = (article: Article) => {
     setSelectedArticle(article);
     setIsModalOpen(true);
+    window.history.pushState(null, '', `?id=${article.id}`);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedArticle(null);
+    window.history.pushState(null, '', window.location.pathname);
   };
 
   const goToPage = (page: number) => {
